@@ -1,0 +1,13 @@
+https://lumagallacio.medium.com/tutorial-como-instalar-apache-airflow-com-docker-ab818d1a55e6
+
+Invoke-WebRequest -Uri 'https://airflow.apache.org/docs/apache-airflow/2.8.0/docker-compose.yaml' -OutFile 'docker-compose.yaml' -Force
+
+New-Item -ItemType Directory -Path .\dags, .\logs, .\plugins, .\config
+
+docker compose up airflow-init
+
+docker-compose up -d
+
+docker ps
+
+Abra um navegador e digite a URL local: http://localhost:8080. Prrencha o nome de usuário como “airflow” e a senha como “airflow”.
