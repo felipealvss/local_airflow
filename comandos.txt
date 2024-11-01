@@ -11,3 +11,5 @@ docker-compose up -d
 docker ps
 
 Abra um navegador e digite a URL local: http://localhost:8080. Prrencha o nome de usuário como “airflow” e a senha como “airflow”.
+
+docker-compose up

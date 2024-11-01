@@ -12,7 +12,7 @@ data_fim = data_inicio + timedelta(days=7)
 data_inicio = data_inicio.strftime("%Y-%m-%d")
 data_fim = data_fim.strftime("%Y-%m-%d")
 
-city = 'Boston'
+city = 'Fortaleza,Ceara'
 key = 'DU4XK9HB6UWSY8HMYF5NUM83W'
 unitGroup = 'metric'
 include = 'days'
