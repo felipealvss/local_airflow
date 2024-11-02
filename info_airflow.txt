@@ -1,0 +1,31 @@
+https://lumagallacio.medium.com/tutorial-como-instalar-apache-airflow-com-docker-ab818d1a55e6
+
+Invoke-WebRequest -Uri 'https://airflow.apache.org/docs/apache-airflow/2.8.0/docker-compose.yaml' -OutFile 'docker-compose.yaml' -Force
+
+New-Item -ItemType Directory -Path .\dags, .\logs, .\plugins, .\config
+
+$env:AIRFLOW_UID = [System.Environment]::UserInteractive
+
+docker compose up airflow-init
+poetry run docker compose up airflow-init
+
+docker-compose up -d
+poetry run docker-compose up -d
+
+docker ps
+poetry run docker ps
+
+Abra um navegador e digite a URL local: http://localhost:8080. Prrencha o nome de usuário como “airflow” e a senha como “airflow”.
+
+poetry run docker-compose down
+docker-compose down
+
+Alguns dos operadores mais usados são:
+ PythonOperator: executa uma função Python;
+ BashOperator: executa um script bash;
+ KubernetesPodOperator: executa uma imagem definida como imagem do Docker em um pod do Kubernetes;
+ SnowflakeOperator: executa uma consulta em um banco de dados Snowflake;
+ EmailOperator: envia um e-mail.
+
+O Airflow tem um conjunto muito extenso de operadores disponíveis. 
+No entanto, se não existir um operador para seu caso de uso, você também pode criar os seus próprios operadores.
