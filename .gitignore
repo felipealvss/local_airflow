@@ -1,4 +1,5 @@
 airflow-local.7z
 airflow.cfg
-webserver_config.py
+airflow-webserver.pid
 logs/
+webserver_config.py

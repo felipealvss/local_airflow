@@ -17,6 +17,9 @@ poetry run docker ps
 
 Abra um navegador e digite a URL local: http://localhost:8080. Prrencha o nome de usuário como “airflow” e a senha como “airflow”.
 
+docker compose restart airflow-webserver
+poetry run docker compose restart airflow-webserver
+
 poetry run docker-compose down
 docker-compose down
 
@@ -29,3 +32,24 @@ Alguns dos operadores mais usados são:
 
 O Airflow tem um conjunto muito extenso de operadores disponíveis. 
 No entanto, se não existir um operador para seu caso de uso, você também pode criar os seus próprios operadores.
+
+Um dos recursos mais fundamentais do Apache Airflow é a capacidade de agendar trabalhos. Dessa forma, é importante conhecermos alguns termos do Airflow que são relacionados ao agendamento:
+
+  Data de início (start date): data em que o DAG começa a ser agendado. Essa data é o início do intervalo de dados que você deseja processar;
+  Intervalo de agendamento (schedule interval): define o intervalo de tempo em que o DAG é acionado. Por exemplo, "@daily" significa que o DAG deve ser acionado todos os dias à meia-noite;
+  Intervalo de dados (data interval): propriedade de cada DAG Run que representa o intervalo de tempo em que cada tarefa deve operar. Por exemplo, para um DAG agendado de dia em dia, cada intervalo de dados começará no início (00:00) e terminará no final do dia (23:59). A execução do DAG acontece no final do intervalo de dados;
+  Data lógica (logical date): é a mesma do início do intervalo de dados. Não representa quando o DAG será realmente executado. Antes do Airflow 2.2, era chamada de data de execução.
+
+O Airflow utiliza o Jinja, uma estrutura de modelagem em Python, como seu mecanismo de modelagem. Vamos conhecer mais algumas variáveis que podemos utilizar em tempo de execução:
+
+  data_interval_start: data do início do intervalo de dados;
+  data_interval_end: data do fim do intervalo de dados;
+  ds: data lógica de execução do DAG;
+  ds_nodash: data lógica de execução do DAG sem nenhuma separação por traços.
+
+Cron Expressions:
+ minuto: 0-59;
+ hora: 0-23;
+ dia do mês: 1-31;
+ mês: 1-12;
+ dia da semana: 0-6 representando de domingo a sábado.

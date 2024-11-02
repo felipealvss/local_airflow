@@ -5,7 +5,7 @@ from airflow.operators.bash import BashOperator
 
 with DAG(
     'my_first_dag',
-    start_date=days_ago(1),
+    start_date=days_ago(2),
     schedule_interval='@daily'
 ) as dag:
     task1 = EmptyOperator(task_id='task1')
@@ -13,7 +13,7 @@ with DAG(
     task3 = EmptyOperator(task_id='task3')
     task4 = BashOperator(
         task_id='task4_mkdir',
-        bash_command='mkdir -p "/opt/airflow/directory"'
+        bash_command='mkdir -p "/opt/airflow/directory={{data_interval_end}}"'
     )
     task1 >> [task2, task3]
     task3 >> task4
