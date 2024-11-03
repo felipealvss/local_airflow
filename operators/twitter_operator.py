@@ -10,6 +10,9 @@ from pathlib import Path
 import json
 
 class TwitterOperator(BaseOperator):
+
+    template_fields = ['query', 'file_path', 'start_time', 'end_time']
+
     def __init__(self, file_path, query, start_time, end_time, **kwargs):
         self.file_path = file_path
         self.query = query
