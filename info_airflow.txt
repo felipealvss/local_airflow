@@ -6,6 +6,9 @@ New-Item -ItemType Directory -Path .\dags, .\logs, .\plugins, .\config
 
 $env:AIRFLOW_UID = [System.Environment]::UserInteractive
 
+Para exportar a variável de ambiente:
+export AIRFLOW_HOME=$(pwd)/[pasta do projeto]
+
 docker compose up airflow-init
 poetry run docker compose up airflow-init
 
@@ -30,6 +33,12 @@ Alguns dos operadores mais usados são:
  SnowflakeOperator: executa uma consulta em um banco de dados Snowflake;
  EmailOperator: envia um e-mail.
 
+Para saber mais: base Operator
+
+Essa é a classe base para todos os operadores. Os operadores criam objetos que se tornam parte do processo, o BaseOperator contém muitos métodos que são importantes para o comportamento de rastreamento do processo. Para herdar essa classe, espera-se que você substitua o construtor e também o método execute.
+Os operadores derivados desta classe devem executar ou acionar determinadas tarefas de forma síncrona (aguardar a conclusão). As instâncias desses operadores (tarefas) visam operações específicas, executando scripts, funções ou transferências de dados específicos.
+Recomendamos que sempre busque uma solução já pronta porque já existem muitos provedores disponíveis na biblioteca do Airflow, mas caso sua tarefa seja específica, você deve utilizar o BaseOperator para criar seu operador. Você pode se aprofundar nesse conceito pela documentação.
+
 O Airflow tem um conjunto muito extenso de operadores disponíveis. 
 No entanto, se não existir um operador para seu caso de uso, você também pode criar os seus próprios operadores.
 
@@ -53,3 +62,8 @@ Cron Expressions:
  dia do mês: 1-31;
  mês: 1-12;
  dia da semana: 0-6 representando de domingo a sábado.
+
+XCom:
+O XCom é um recurso nativo do Airflow para compartilhar dados de tarefas. Esse recurso permite que as tarefas troquem metadados de tarefas ou pequenas quantidades de dados. Eles são definidos por chave, valor e data.
+Os XComs podem ser enviados (xcom.push) ou recebidos (xcom.pull) por uma tarefa. Quando enviado por uma tarefa, ele é armazenado no banco de dados do Airflow e fica disponível para todas as outras tarefas.
+Esse recurso deve ser utilizado apenas para passar pequenas quantidades de dados entre as tarefas. Ele não foi projetado para passar dados como DataFrames ou semelhantes. Para casos como esse, podemos utilizar o armazenamento de dados intermediário, que é mais apropriado para grandes blocos de dados. 
