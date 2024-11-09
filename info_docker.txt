@@ -2,5 +2,7 @@ poetry run docker-compose up -d
 poetry run docker compose down
 
 docker exec -it -u root jupyter bash
+apt-get update
+apt-get install openjdk-8-jdk-headless -qq
 
 docker-compose restart jupyter

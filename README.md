@@ -5,3 +5,5 @@
 - Spark
 - Pandas
 - Poetry
+- Spark SQL
+- Pupyter notebook
