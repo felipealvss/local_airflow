@@ -116,6 +116,38 @@ services:
       start_period: 30s
     restart: always
 
+  spark:
+    image: bitnami/spark:3.5.0
+    environment:
+      SPARK_MODE: master
+      SPARK_MASTER_HOST: spark
+      SPARK_MASTER_PORT: 7077
+      SPARK_MASTER_WEBUI_PORT: 8082
+    ports:
+      - "7077:7077"
+      - "8082:8082"
+    volumes:
+      - ./src/scripts:/scripts
+      - ./src/notebooks/output/tweet:/tweet
+      - ./src/notebooks/output/user:/user
+      - ./datalake:/datalake
+    healthcheck:
+      test: ["CMD", "curl", "--fail", "http://localhost:8082/"]
+      interval: 30s
+      timeout: 10s
+      retries: 5
+      start_period: 120s
+    restart: always
+
+  spark-worker:
+    image: bitnami/spark:3.5.0
+    environment:
+      SPARK_MODE: worker
+      SPARK_MASTER_URL: spark://spark:7077
+    depends_on:
+      - spark
+    restart: always
+
   airflow-webserver:
     <<: *airflow-common
     command: webserver
@@ -285,5 +317,31 @@ services:
       airflow-init:
         condition: service_completed_successfully
 
+  jupyter:
+    image: jupyter/pyspark-notebook:latest
+    container_name: jupyter
+    environment:
+      - JUPYTER_ENABLE_LAB=yes
+      - SPARK_HOME=/usr/local/spark
+      - PYTHONPATH=/usr/local/spark/python:/usr/local/spark/python/lib/py4j-*.zip
+      - JUPYTER_TOKEN='AcessoJupiter@1995'
+      - SPARK_MASTER=spark://spark:7077
+      # Adicionando o diretório correto do Spark ao PATH
+      - PATH=/usr/local/spark/bin:/opt/conda/bin:/opt/conda/condabin:/usr/local/sbin:/usr/local/bin:/usr/sbin:/usr/bin:/sbin:/bin
+    ports:
+      - "8888:8888"
+    volumes:
+      - ./src/notebooks:/home/jovyan/work
+      - ./datalake:/datalake
+    depends_on:
+      - spark
+    networks:
+      - default
+    restart: always
+
 volumes:
   postgres-db-volume:
+
+networks:
+  default:
+    driver: bridge

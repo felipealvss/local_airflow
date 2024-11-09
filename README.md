@@ -1,4 +1,7 @@
-# Projeto de testes com Airflow
+# Projeto destinado a práticas de uso do Apache Airflow
 
-## Projeto destinado a práticas de uso do Apache Airflow
-- Ferramentas utilizadas: Docker, Pandas e Poetry
+## Ferramentas utilizadas
+- Docker 
+- Spark
+- Pandas
+- Poetry

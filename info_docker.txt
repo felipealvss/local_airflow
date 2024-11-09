@@ -1,0 +1,6 @@
+poetry run docker-compose up -d
+poetry run docker compose down
+
+docker exec -it -u root jupyter bash
+
+docker-compose restart jupyter

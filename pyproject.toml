@@ -10,7 +10,11 @@ readme = "README.md"
 python = "^3.12"
 pandas = "^2.2.3"
 requests = "^2.32.3"
+pyspark = "^3.5.3"
 
+
+[tool.poetry.group.dev.dependencies]
+ipykernel = "^6.29.5"
 
 [build-system]
 requires = ["poetry-core"]
