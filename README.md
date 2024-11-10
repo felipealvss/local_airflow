@@ -1,9 +1,8 @@
-# Projeto destinado a práticas de uso do Apache Airflow
+# Projeto destinado a práticas de uso do Apache Airflow e integração com Apache Spark
 
 ## Ferramentas utilizadas
-- Docker 
-- Spark
-- Pandas
-- Poetry
-- Spark SQL
-- Pupyter notebook
+- Spark (via Docker)
+- Pandas (via Docker)
+- Poetry (via Docker)
+- Spark SQL (via Docker)
+- Pupyter notebook (via Docker)

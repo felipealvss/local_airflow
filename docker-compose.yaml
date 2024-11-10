@@ -117,7 +117,8 @@ services:
     restart: always
 
   spark:
-    image: bitnami/spark:3.5.0
+    image: bde2020/spark-master:3.3.0-hadoop3.3
+    container_name: spark-master
     environment:
       SPARK_MODE: master
       SPARK_MASTER_HOST: spark
@@ -138,15 +139,34 @@ services:
       retries: 5
       start_period: 120s
     restart: always
+    user: "root"
 
   spark-worker:
-    image: bitnami/spark:3.5.0
+    image: bde2020/spark-worker:3.3.0-hadoop3.3
+    container_name: spark-worker
     environment:
       SPARK_MODE: worker
       SPARK_MASTER_URL: spark://spark:7077
     depends_on:
       - spark
     restart: always
+
+  spark-submit:
+    image: bde2020/spark-submit:3.3.0-hadoop3.3
+    container_name: spark-submit
+    environment:
+      SPARK_MASTER_URL: spark://spark:7077
+      SPARK_APPLICATION_PYTHON_LOCATION: /scripts/transformation.py  # Caminho para o seu script Python
+      SPARK_APPLICATION_ARGS: "--src /datalake/twitter_datascience/extract_date=2024-11-02/datascience_20241102.json --path /scripts --process_date 2024-11-09" # Parâmetros definidos para o spark-submit
+    volumes:
+      - ./src/scripts:/scripts
+      - ./src/notebooks/output/tweet:/tweet
+      - ./src/notebooks/output/user:/user
+      - ./datalake:/datalake
+    depends_on:
+      - spark
+    restart: on-failure
+    command: /submit.sh  # Usando o script submit.sh para rodar o spark-submit
 
   airflow-webserver:
     <<: *airflow-common

@@ -18,7 +18,11 @@ def export_json(df, path):
     df.coalesce(1).write.mode("overwrite").json(path)
 
 def twitter_transformation(spark, src, path, process_date):
-    df = spark.read.json(src)
+    try:
+        df = spark.read.json(src)
+    except Exception as e:
+        print(f"Erro ao ler o arquivo JSON: {e}")
+        exit(1)
 
     df_tweet = get_tweets_data(df)
     df_user = get_users_data(df)
@@ -38,8 +42,9 @@ if __name__ == "__main__":
 
     args = parser.parse_args()
 
-    spark = SparkSession.Builder \
-        .appName('labdados_transform') \
+    spark = SparkSession.builder \
+        .appName('twitter_transformation') \
+        .master("local") \
         .getOrCreate()
 
     twitter_transformation(spark, args.src, args.path, args.process_date)

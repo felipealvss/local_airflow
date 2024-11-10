@@ -1,3 +1,5 @@
+poetry run docker ps
+
 poetry run docker-compose up -d
 poetry run docker compose down
 
@@ -6,3 +8,18 @@ apt-get update
 apt-get install openjdk-8-jdk-headless -qq
 
 docker-compose restart jupyter
+
+docker exec -it -u root <nome do container> bash (acesso root ao console do container)
+
+poetry run docker exec -it -u root <nome do container> bash
+
+spark-submit /scripts/transformation.py --src /datalake/twitter_datascience/extract_date=2024-11-02/datascience_20241102.json --path /scripts --process_date 2024-11-09
+
+spark-submit --conf spark.hadoop.security.authentication=none --conf spark.hadoop.fs.defaultFS=file:/// --conf spark.authenticate=false /scripts/transformation.py --src /datalake/twitter_datascience/extract_date=2024-11-02/datascience_20241102.json --path /scripts --process_date 2024-11-09
+spark-submit --conf spark.hadoop.fs.defaultFS=file:/// --conf spark.hadoop.fs.local=org.apache.hadoop.fs.LocalFileSystem --conf spark.authenticate=false /scripts/transformation.py --src /datalake/twitter_datascience/extract_date=2024-11-02/datascience_20241102.json --path /scripts --process_date 2024-11-09
+spark-submit --conf spark.executor.extraClassPath="" --conf spark.driver.extraClassPath="" --conf spark.hadoop.fs.defaultFS=file:/// --conf spark.authenticate=false /scripts/transformation.py --src /datalake/twitter_datascience/extract_date=2024-11-02/datascience_20241102.json --path /scripts --process_date 2024-11-09
+
+docker exec -it spark-submit bash
+/opt/spark/bin/spark-submit --master spark://spark:7077 /scripts/transformation.py --src /datalake/twitter_datascience/extract_date=2024-11-02/datascience_20241102.json --path /scripts --process_date 2024-11-09
+
+poetry run docker exec -it spark python scripts/transformation.py
